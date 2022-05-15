@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ks/project/SM3/sm3.c
+stdlib.h
+-
+stdio.h
+-
+string.h
+-
+sm3.h
+/home/ks/project/SM3/sm3.h
+
+/home/ks/project/SM3/sm3.h
+string.h
+-
+
