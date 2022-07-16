@@ -4,7 +4,7 @@
 #include <chrono>
 #include <iostream>
 #include "sm3.h"
-
+#include<cmath>
 
 
 
@@ -214,6 +214,9 @@ void SM3_256(uint8_t buf[], int len, uint8_t hash[])
 	SM3_final(&ctx, hash);
 }
 
+
+
+
 int main()
 {
 	uint32_t a=1,b=1;
@@ -243,8 +246,8 @@ int main()
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double> sm3_time = end - start;
 	std::cout << "sm3_time: " << sm3_time.count() << "s\n";
+	//std::cout<<"sm3 speed"<<(32/sm3_time.count())/pow(2,20)<<std::endl;
 
-	
 	a=memcmp(MsgHash1,StdHash1,SM3_len/8);
 	b=memcmp(MsgHash2,StdHash2,SM3_len/8);
 
