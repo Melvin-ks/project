@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/ks/project/SM3_birthday_attack/attack.cpp
+stdio.h
+-
+string.h
+-
+sm3.h
+/home/ks/project/SM3_birthday_attack/sm3.h
+random
+-
+ctime
+-
+
+/home/ks/project/SM3_birthday_attack/sm3.h
+openssl/evp.h
+/home/ks/project/SM3_birthday_attack/openssl/evp.h
+
