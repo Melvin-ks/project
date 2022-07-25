@@ -1,1 +1,0 @@
-/usr/bin/c++  -O3 -DNDEBUG  -rdynamic CMakeFiles/SM3_birthday_attack.dir/attack.cpp.o  -o SM3_birthday_attack  -Wl,-rpath,/usr/local/lib /usr/local/lib/libcrypto.so /usr/local/lib/libssl.so /usr/local/lib/libcrypto.so 
