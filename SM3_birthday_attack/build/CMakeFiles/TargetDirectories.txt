@@ -1,3 +1,0 @@
-/home/ks/project/SM3_birthday_attack/build/CMakeFiles/rebuild_cache.dir
-/home/ks/project/SM3_birthday_attack/build/CMakeFiles/edit_cache.dir
-/home/ks/project/SM3_birthday_attack/build/CMakeFiles/SM3_birthday_attack.dir
