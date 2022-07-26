@@ -1,6 +1,7 @@
 #include "openssl/evp.h"
 
  
+const int bit=6;
 int sm3_hash(const unsigned char *message, size_t len, unsigned char *hash, unsigned int *hash_len)
 {
     EVP_MD_CTX *md_ctx;
@@ -14,3 +15,24 @@ int sm3_hash(const unsigned char *message, size_t len, unsigned char *hash, unsi
     EVP_MD_CTX_free(md_ctx);
     return 0;
 }
+
+int sm3_hash_rho(const unsigned char *message, size_t len, unsigned char *hash, unsigned int *hash_len)
+{
+    
+    unsigned char hash_value[32];
+    EVP_MD_CTX *md_ctx;
+    const EVP_MD *md;
+   
+    md = EVP_sm3();
+    md_ctx = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(md_ctx, md, NULL);
+    EVP_DigestUpdate(md_ctx, message, len);
+    EVP_DigestFinal_ex(md_ctx, hash_value, hash_len);
+    EVP_MD_CTX_free(md_ctx);
+
+    memcpy(hash,hash_value,bit);
+
+    
+    return 0;
+}
+
