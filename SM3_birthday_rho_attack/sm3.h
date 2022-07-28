@@ -1,7 +1,7 @@
 #include "openssl/evp.h"
 
  
-const int bit=6;
+const int bit=7;
 int sm3_hash(const unsigned char *message, size_t len, unsigned char *hash, unsigned int *hash_len)
 {
     EVP_MD_CTX *md_ctx;
