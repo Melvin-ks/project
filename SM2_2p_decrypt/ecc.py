@@ -39,7 +39,7 @@ def leftmost_bit(x):
 class CurveFp(object):
 
     def __init__(self, p, a, b):
-        """ 椭圆曲线方程y^2 = x^3 + a*x + b (mod p)."""
+       
         self.p = p
         self.a = a
         self.b = b
@@ -54,13 +54,7 @@ class CurveFp(object):
     def __repr__(self):
         return "Curve(p={0:d}, a={1:d}, b={2:d})".format(self.p, self.a, self.b)
 
-    # def plain_embed(self, x):
-    #     if x > self.p:
-    #         assert False
-    #     for i in range(self.p):
-    #         y = (x ** 3 + self.a * x + self.b) ** (1/2)
-    #         if int(y) - y == 0:
-    #             return Point(self, x, int(y))
+
 
 
 class Point(object):
@@ -71,14 +65,14 @@ class Point(object):
         self.x = x
         self.y = y
         self.order = order
-        # self.curve is allowed to be None only for INFINITY:
+        
         if self.curve:
             assert self.curve.contains_point(x, y)
         if order:
             assert self * order == INFINITY
 
     def __eq__(self, other):
-        """两个点是否重合"""
+        
         if self.curve == other.curve \
                 and self.x == other.x \
                 and self.y == other.y:
@@ -168,24 +162,3 @@ class Point(object):
 INFINITY = Point(None, None, None)
 
 
-if __name__ == '__main__':
-    #p, a, b = 29, 4, 20
-    curve = CurveFp(p, a, b)
-    G = Point(curve, Gx, Gy)  # 38
-    k = 33  # 私钥
-    K = k * G  # 公钥
-    print("(公开)椭圆曲线E{}({},{})".format(p, a, b))
-    print("(公开)基点G{}".format(G))
-    print("私钥: k =", k)
-    print("公钥: K =", K)
-    m = [Point(curve, 6, 17), Point(curve, 10, 4), Point(curve, 10, 25), Point(curve, 24, 7), Point(curve, 5, 7)]
-    print("明文: m=", m)
-    # mp = [curve.plain_embed(i) for i in m]
-    # print("明文嵌入: mp=", mp)
-    # 公钥K加密
-    r = [random.randint(2,38) for i in m]
-    C1 = [i + ri * K for ri,i in zip(r,m)]
-    C2 = [ri * G for ri,i in zip(r,m)]
-    print("密文 C1 =", C1)
-    print("密文 C2 =", C2)
-    print("解密 mm =", [c1 + k*c2.invert() for c1, c2 in zip(C1, C2)])
