@@ -36,8 +36,6 @@ void tree::buildTree(vector<string> base_leafs)
   
   base_leafs = sort_hash(base_leafs);
   this->sorted_leaf = (base_leafs);
-  for(auto leaf:sorted_leaf)
-    cout<<leaf<<endl;
   copy(base_leafs.begin(), base_leafs.end(), this->sorted_leaf.begin());
   int leaf_size = base_leafs.size();
   if (leaf_size & 1)
@@ -77,17 +75,18 @@ void tree::buildTree(vector<string> base_leafs)
       new_parent->setHash(combine_hash(this->base.end()[-1][i]->getHash(), this->base.end()[-1][i + 1]->getHash()));
       new_parent->setChildren(this->base.end()[-1][i], this->base.end()[-1][i + 1]);
       new_nodes.push_back(new_parent);
-      // cout << "combine  " << this->base.end()[-1][i]->getHash() << " and " << this->base.end()[-1][i + 1]->getHash() << endl
-      //      << " parents: " << new_parent->getHash() << endl;
+      cout << "combine  " << this->base.end()[-1][i]->getHash() << " and " << this->base.end()[-1][i + 1]->getHash() << endl
+           << " parents: " << new_parent->getHash() << endl;
     }
 
     if (is_power_two(new_nodes.size() + temp.size()))
     {
       for (auto node : temp)
         new_nodes.push_back(node);
+      
       temp.clear();
     }
-    // printTreeLevel(new_nodes);
+    
 
     this->base.push_back(new_nodes);
 
@@ -95,7 +94,7 @@ void tree::buildTree(vector<string> base_leafs)
 
   this->merkleRoot = this->base.end()[-1][0]->getHash();
 
-  std::cout << "Merkle Root is: " << this->merkleRoot << endl
+  std::cout<< endl<< "Merkle Root is: " << this->merkleRoot << endl
             << endl;
 }
 
@@ -106,22 +105,33 @@ string tree::getMerkleRoot()
 
 vector<node *> tree::generate_proof(string hash)
 {
-
+  
   node *el_node = NULL;
-
+  bool flag=false;
   string act_hash = hash;
   vector<node *> proof;
-  for (int i = 0; i < this->base[0].size(); i++)
+  for (int i = 0; i < this->base.size(); i++)
   {
-    if (this->base[0][i]->getHash() == act_hash)
-      el_node = this->base[0][i];
+    for(int j=0;j<this->base[i].size();j++)
+    {
+     
+      if (this->base[i][j]->getHash() == act_hash)
+      {
+        el_node = this->base[i][j];
+        flag=true;
+      }
+    }
+    if(flag) break;
   }
+  
   while ((el_node->getParent()) != NULL)
   {
+   
     proof.push_back(el_node->getSibling());
-    // proof.push_back(el_node->getParent());
     el_node = el_node->getParent();
+    
   }
+  
   return proof;
 }
 
@@ -143,36 +153,38 @@ bool tree::verify(vector<node *> proof, string hash)
 
 exclusion_proof tree::generate_Exclusionproof(string hash)
 {
-  printf("here\n");
+  
   exclusion_proof proof;
   vector<string> sorted_list=this->sorted_leaf;
   sorted_list.push_back(hash);
   sort(sorted_list.begin(),sorted_list.end());
   int index=find(sorted_list.begin(),sorted_list.end(),hash)-sorted_list.begin();
-  printf("index: %d\n",index);
   int index1,index2;
-  cout<<"sorted_list[9]"<<sorted_list[9]<<endl;
+  
   if(index==sorted_list.size()) 
   {
     index1=index-1;
-    index2=0;
+    if(sorted_list[index1]==hash) index2--;
+    index2=1;
   }
   else if(index==0)
   {
+
     index1=sorted_list.size()-1;
     
-    index2=0;
-    printf("index1: %d  index2:   %d",index1,index2);
+    index2=1;
+    if(sorted_list[index2]==hash) index2++;
   }
   else
   {
-    index1=index;
-    index2=index;
-    // while(sorted_list[index1]==hash) index1--;
+    index1=index-1;
+    index2=index+1;
+    if(sorted_list[index1]==hash) index1--;
     
-    // while(sorted_list[index2]==hash) index2++;
+    if(sorted_list[index2]==hash) index2++;
+    index2%=sorted_list.size();
   }
-  printf("index1: %d  index2:   %d",index1,index2);
+
   proof.hash1 = (sorted_list[index1]);
   proof.proof1 = (generate_proof(sorted_list[index1]));
   
@@ -180,12 +192,6 @@ exclusion_proof tree::generate_Exclusionproof(string hash)
   
    proof.proof2 = (generate_proof(sorted_list[index2]));
 
-   //while (hash <= sorted_leaf[i]) i--;
-    
-  
-  // printf("i: %d\n",i);
-  // proof.hash1 = (this->sorted_leaf[i]);
-  // proof.proof1 = (generate_proof(this->sorted_leaf[i]));
 
   return proof;
 }
@@ -198,7 +204,7 @@ bool tree::verify_Exclusionproof(exclusion_proof proof)
     if (proof.hash1 == this->sorted_leaf[i])
       break;
   }
-  if (this->sorted_leaf[i + 1] != proof.hash2)
+  if (this->sorted_leaf[(i + 1)%this->sorted_leaf.size()] != proof.hash2)
     return false;
   if (verify(proof.proof1, proof.hash1) && verify(proof.proof2, proof.hash2))
     return true;

@@ -3,7 +3,7 @@
 #include "sm3.h"
 using namespace std;
 
-const int N = 10;
+const int N = 100000;
 
 string rand_str(const int len)
 {
@@ -30,20 +30,19 @@ int main()
   vector<node *> proof;
   tree ntree;
   ntree.buildTree(v);
-  // ntree.buildBaseLeafes(v);
+  
 
-  proof = ntree.generate_proof(getleafHash(v[1]));
-  cout<<"tets: "<<getleafHash(v[1])<<endl;
-  if (ntree.verify(proof, getleafHash(v[1])))
-    printf("verfify success!\n");
+  proof = ntree.generate_proof(getleafHash(v[0]));
+  if (ntree.verify(proof, getleafHash(v[0])))
+    printf("inclusion verify success!\n");
   else
-    printf("verfify fail\n");
+    printf("inclusion verify fail\n");
   exclusion_proof ex_proof;
-  string test="202000460103";
-  cout<<"generate_Exclusionproof: "<<getleafHash(v[1])<<endl;
-  ex_proof=ntree.generate_Exclusionproof(getleafHash(v[1]));
+  string test="2000460103";
+  cout<<"exclusion_leaf_hash: "<<getleafHash(test)<<endl;
+  ex_proof=ntree.generate_Exclusionproof(getleafHash(test));
   if(ntree.verify_Exclusionproof(ex_proof))
-    printf("verfify success!\n");
+    printf("exclusion verify success!\n");
   else
-    printf("verfify fail\n");
+    printf("exclusion verify fail\n");
 }

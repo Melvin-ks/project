@@ -3,11 +3,10 @@ import sys
 import socket
 import binascii
 from random import randint
-from os.path import commonprefix
 from ecc import *
 
 curve = CurveFp(p, a, b)
-G = Point(curve, Gx, Gy)  # 38
+G = Point(curve, Gx, Gy)  
 
 HOST = '127.0.0.1'
 PORT = 8090
@@ -22,20 +21,16 @@ except Exception:
 else:
 
     d1 = randint(1,n-1)
-    
-   
     P1 = inv_mod(d1,p)*G
     
-   
     addr = (HOST, PORT)
-    print(P1.x)
-    print(P1.y)
+   
     client.sendto(str(hex(P1.x)).encode('utf-8'), addr)
     client.sendto(str(hex(P1.y)).encode('utf-8'), addr)
    
     m = "I'm Alice"
     ID_A = "202000460103"
-    m = hex(int(binascii.b2a_hex(m.encode()).decode(), 16)).upper()[2:]
+    m = hex(int(binascii.b2a_hex(m.encode()).decode(), 16)).upper()[2:]  #编码为hex
     
     ID_A = hex(int(binascii.b2a_hex(ID_A.encode()).decode(), 16)).upper()[2:]
     ENTL_A = '{:04X}'.format(len(ID_A) * 4)
@@ -49,8 +44,6 @@ else:
     
     Q1 = k1*G
     
-    print(Q1.x)
-    print(Q1.y)
     client.sendto(str(hex(Q1.x)).encode('utf-8'),addr)
     client.sendto(str(hex(Q1.y)).encode('utf-8'),addr)
     client.sendto(e.encode('utf-8'),addr)

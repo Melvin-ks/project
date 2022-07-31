@@ -41,21 +41,25 @@ int main(void)
 	printf("\n");
 
 	SM2_ZA(pubx_char, puby_char, ZA);
-
+	auto sign_start = chrono::steady_clock::now();
 	SM2_sign(message,strlen((char*)message),ZA,d,r,s);
-
+	auto sign_end = chrono::steady_clock::now();
 	printf("Generate Signature:\n\n");
 	print_buffer(r);
 	print_buffer(s);
 	printf("\n");
-	
+	auto verify_start = chrono::steady_clock::now();
 	SM2_verify(message, strlen((char*)message), ZA, pubx_char, puby_char, r, s);
-	
+	auto verify_end = chrono::steady_clock::now();
 
 
 	auto end = std::chrono::steady_clock::now();
     std::chrono::duration<double> cost_time = end - start;
     std::cout << "time: " << cost_time.count() << "\n";
+	std::chrono::duration<double> sign_time = sign_end - sign_start;
+    std::cout << "sign speed: " << 1/sign_time.count() << " /s \n";
+	std::chrono::duration<double> verify_time = verify_end - sign_start;
+    std::cout << "verify speed: " << 1/verify_time.count() << "/s\n";
 	
 	
 	

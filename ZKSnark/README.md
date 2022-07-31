@@ -1,6 +1,6 @@
 # Write a circuit to prove that your CET6 grade is larger than 425
 
-将问题扩展到了任意范围，同时针对不同的约束系统进行了不同的电路结构设计。
+将问题扩展到了任意范围，同时针对不同的约束系统进行了不同的电路结构设计。并利用circom库语言进行了R1CS约束的实现
 
 ## 电路构造
 
@@ -47,7 +47,12 @@ $$
 
 然后对a和b分别进行上述的基本电路构造过程，由此我们便实现了任意范围的零知识证明
 
+在此例中令（CET分数范围）
 
+- min=425 
+- max=750
+
+即可
 
 ## R1CS（Groth16）
 
@@ -162,3 +167,35 @@ $$
 ### inrange.circom
 
 inrange.circom是用circom语言基于R1CS实现的电路
+
+利用GreaterEq和LessEq组件分别约束最大值和最小值，最后判断out是否等于2，即两个均为真
+
+![image-20220731143917104](../image/image-20220731143917104.png)
+
+#####  circuit.r1cs  
+
+ r1cs 电路的二进制格式约束系统
+
+##### circuit.wasm 
+
+wasm 代码用来生成见证 witness 稍后再介绍
+
+#####  circuit.sym 
+
+以注释方式调试和打印约束系统所需的符号文件
+
+##### InRange_js
+
+生成的js文件，可利用snarkjs
+
+#### 运行
+
+```shell
+circom InRange.circom --r1cs --wasm --sym
+```
+
+![](../image/image-20220731143210755.png)
+
+#### dependices
+
+circom库

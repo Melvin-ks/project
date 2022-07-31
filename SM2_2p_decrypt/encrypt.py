@@ -26,9 +26,7 @@ def encrypt(M):
     klen = len(hex(C1.x)[2:])*2
     t = KDF1(x2 + y2, klen)
 
-    
     C2=(M)^int(t,16)
-    
     
 
     C3 = sm3.sm3_hash(func.bytes_to_list(str(x2+M+y2).encode()))
