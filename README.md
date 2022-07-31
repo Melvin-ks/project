@@ -21,3 +21,6 @@
 
 
 由于项目上传后对README，测试有调整。所以更新时间较新。详细项目信息请移步对应文件夹(birthday attack与rho method在同一文件夹)
+
+
+若图片不能显示(图片在image文件夹下），请下载压缩包再打开README.md
