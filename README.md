@@ -17,4 +17,7 @@
 9. ZKSNARK range proof
 
 
-由于项目上传后对README，测试有调整。所以更新时间较新。详细项目信息请移步对应文件夹
+
+
+
+由于项目上传后对README，测试有调整。所以更新时间较新。详细项目信息请移步对应文件夹(birthday attack与rho method在同一文件夹)
